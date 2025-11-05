@@ -1,0 +1,38 @@
+{
+  "name": "noticore",
+  "version": "1.0.0",
+  "description": "a flexible library for making scaleable notification system",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "prepublishOnly": "npm run build",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/behrad-kzm/kafka-nestjs.git"
+  },
+  "keywords": [
+    "notification",
+    "system",
+    "message",
+    "notification",
+    "scaleable"
+  ],
+  "author": "Behrad Kazemi",
+  "license": "MIT",
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.1",
+    "@nestjs/core": "^11.0.1",
+    "@nestjs/axios": "^4.0.0",
+    "typeorm": "^0.3.22",
+    "mailgun.js": "^12.0.1",
+    "firebase-admin": "^13.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
+  }
+}
