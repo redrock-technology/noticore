@@ -1,31 +1,31 @@
 import { NotiCoreDeliveryChannelEnum } from '../../../enums/delivery-channel.enum';
 
-export class DeliverCreatedNotificationRequestDto {
+export class NotiCoreDeliverCreatedNotificationRequestDto {
   channelType: NotiCoreDeliveryChannelEnum;
   limit: number;
 }
 
-export class DeliverFailedNotificationRequestDto {
+export class NotiCoreDeliverFailedNotificationRequestDto {
   channelType: NotiCoreDeliveryChannelEnum;
   limit: number;
   maxDeliveryAttempts: number;
 }
 
-export class CheckForPendingNotificationRequestDto {
+export class NotiCoreCheckForPendingNotificationRequestDto {
   channelType: NotiCoreDeliveryChannelEnum;
   limit: number;
   checkDeadLineCronSeconds: number;
 }
 
-export class DeliverPendingNotificationsRequestDto {
+export class NotiCoreDeliverPendingNotificationsRequestDto {
   ids: string[];
 }
 
-export class UpdateSuccessfullySentNotificationsRequestDto {
+export class NotiCoreUpdateSuccessfullySentNotificationsRequestDto {
   successIds: string[];
 }
 
-export class UpdateFailedNotificationsRequestDto {
+export class NotiCoreUpdateFailedNotificationsRequestDto {
   failedIds: string[];
   errorMessage: string;
 }

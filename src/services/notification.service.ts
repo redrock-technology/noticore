@@ -3,10 +3,10 @@ import { NotiCoreNotificationObject } from '../interfaces';
 import { INotiCoreNotificationMQEventPublisher } from '../interfaces/mq.interface';
 import { INotiCorePaginationResponse } from '../interfaces/pagination.interface';
 import {
-  FindOneNotificationRequestDto,
-  FindPendingNotificationRequestDto,
-  GetNotificationRequestDto,
-  UpdateNotificationRequestDto,
+  NotiCoreFindOneNotificationRequestDto,
+  NotiCoreFindPendingNotificationRequestDto,
+  NotiCoreGetNotificationRequestDto,
+  NotiCoreUpdateNotificationRequestDto,
 } from '../dtos/repository/requests';
 import {
   ReferenceDeletedNotificationServiceRequestDto,
@@ -25,7 +25,7 @@ import {
  *
  * T: concrete Notification entity shape used by the repository
  */
-export class RRNotificationService<T extends NotiCoreNotificationObject> {
+export class NotiCoreNotificationService<T extends NotiCoreNotificationObject> {
   constructor(
     private readonly repository: INotiCoreNotificationRepository<T>,
     private readonly eventPublisher: INotiCoreNotificationMQEventPublisher,
@@ -54,7 +54,7 @@ export class RRNotificationService<T extends NotiCoreNotificationObject> {
    *
    * @param dto - pagination, ordering, relations and user context
    */
-  async getNotifications(dto: GetNotificationRequestDto): Promise<INotiCorePaginationResponse<T>> {
+  async getNotifications(dto: NotiCoreGetNotificationRequestDto): Promise<INotiCorePaginationResponse<T>> {
     return await this.repository.getnotifications({
       limit: dto.limit,
       page: dto.page,
@@ -71,7 +71,7 @@ export class RRNotificationService<T extends NotiCoreNotificationObject> {
    * Finds a single notification by criteria.
    * @param dto - lookup criteria
    */
-  async findOne(dto: FindOneNotificationRequestDto): Promise<T | null> {
+  async findOne(dto: NotiCoreFindOneNotificationRequestDto): Promise<T | null> {
     return await this.repository.findOne(dto);
   }
 
@@ -79,7 +79,7 @@ export class RRNotificationService<T extends NotiCoreNotificationObject> {
    * Marks a notification as NOTIFIED.
    * @param dto - id and optional extra fields to update
    */
-  async setAsNotified(dto: UpdateNotificationRequestDto): Promise<void> {
+  async setAsNotified(dto: NotiCoreUpdateNotificationRequestDto): Promise<void> {
     return await this.repository.setAsNotified(dto);
   }
 
@@ -87,7 +87,7 @@ export class RRNotificationService<T extends NotiCoreNotificationObject> {
    * Marks a notification as FAILED with an optional error message.
    * @param dto - id and optional error info
    */
-  async setAsFailed(dto: UpdateNotificationRequestDto): Promise<void> {
+  async setAsFailed(dto: NotiCoreUpdateNotificationRequestDto): Promise<void> {
     return await this.repository.setAsFailed(dto);
   }
 
@@ -95,7 +95,7 @@ export class RRNotificationService<T extends NotiCoreNotificationObject> {
    * Schedules a notification for retry.
    * @param dto - id and retry metadata
    */
-  async setForRetry(dto: UpdateNotificationRequestDto): Promise<void> {
+  async setForRetry(dto: NotiCoreUpdateNotificationRequestDto): Promise<void> {
     return this.repository.setForRetry(dto);
   }
 
@@ -103,7 +103,7 @@ export class RRNotificationService<T extends NotiCoreNotificationObject> {
    * Retrieves pending notifications constrained by repository settings.
    * @param dto - filtering and limit options
    */
-  async findPendings(dto: FindPendingNotificationRequestDto): Promise<T[]> {
+  async findPendings(dto: NotiCoreFindPendingNotificationRequestDto): Promise<T[]> {
     return await this.repository.findPendings(dto);
   }
 

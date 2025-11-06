@@ -1,15 +1,15 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-import { IMessageSender, ISMSMessage, ISMSSender, SmsToConfigType } from '../../interfaces';
+import { INotiCoreMessageSender, INotiCoreSMSMessage, INotiCoreSMSSender, NotiCoreSmsToConfigType } from '../../interfaces';
 /**
  * This adapter integrates with the sms.to SMS API (https://sms.to/sms-api/)
  */
 @Injectable()
-export class SmsToEdgeService implements IMessageSender<ISMSMessage>, ISMSSender {
+export class SmsToEdgeService implements INotiCoreMessageSender<INotiCoreSMSMessage>, INotiCoreSMSSender {
   private httpService: HttpService;
 
-  constructor(private readonly config: SmsToConfigType) {
+  constructor(private readonly config: NotiCoreSmsToConfigType) {
     this.config = config;
     this.httpService = new HttpService();
   }
@@ -53,7 +53,7 @@ export class SmsToEdgeService implements IMessageSender<ISMSMessage>, ISMSSender
    * @param message - The message to send.
    * @returns The response from the SMS API.
    */
-  async send(message: ISMSMessage): Promise<any> {
+  async send(message: INotiCoreSMSMessage): Promise<any> {
     await this.sendMessage(message.payload.body, message.recipient);
   }
 
@@ -62,7 +62,7 @@ export class SmsToEdgeService implements IMessageSender<ISMSMessage>, ISMSSender
    * @param messages - The messages to send.
    * @returns The response from the SMS API.
    */
-  async sendEach(messages: ISMSMessage[]): Promise<any> {
+  async sendEach(messages: INotiCoreSMSMessage[]): Promise<any> {
     return Promise.all(messages.map((message) => this.send(message)));
   }
 }

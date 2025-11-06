@@ -1,11 +1,11 @@
-export enum NotificationFailureReason {
+export enum NotiCoreNotificationFailureReason {
   NO_NOTIFIABLE_CHANNEL = 'NO_NOTIFIABLE_CHANNEL',
   UNKNOWN = 'UNKNOWN',
 }
-export class NotificationFailureMessageFactory {
-  static getMessage(reason: NotificationFailureReason): string {
+export class NotiCoreNotificationFailureMessageFactory {
+  static getMessage(reason: NotiCoreNotificationFailureReason): string {
     switch (reason) {
-      case NotificationFailureReason.NO_NOTIFIABLE_CHANNEL:
+      case NotiCoreNotificationFailureReason.NO_NOTIFIABLE_CHANNEL:
         return 'No notifiable channel for this notification.';
 
       default:

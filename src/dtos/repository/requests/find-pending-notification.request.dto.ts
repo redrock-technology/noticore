@@ -1,4 +1,4 @@
-export class FindPendingNotificationRequestDto {
+export class NotiCoreFindPendingNotificationRequestDto {
   exclude?: string[];
   take: number;
   where?: any;

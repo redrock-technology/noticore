@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { getMessaging } from 'firebase-admin/messaging';
-import { IFCMSender, IMessageSender, IPushMessage } from '../../interfaces';
+import { INotiCoreFCMSender, INotiCoreMessageSender, INotiCorePushMessage } from '../../interfaces';
 
 /**
  * This edge service integrates with the Firebase Cloud Messaging (FCM) API (https://firebase.google.com/docs/cloud-messaging)
@@ -10,7 +10,7 @@ import { IFCMSender, IMessageSender, IPushMessage } from '../../interfaces';
  * It is used to send push notifications to devices.
  */
 @Injectable()
-export class FCMEdgeService implements IMessageSender<IPushMessage>, IFCMSender {
+export class FCMEdgeService implements INotiCoreMessageSender<INotiCorePushMessage>, INotiCoreFCMSender {
   static admin: admin.app.App;
 
   /**
@@ -64,7 +64,7 @@ export class FCMEdgeService implements IMessageSender<IPushMessage>, IFCMSender 
    *          - id: Original notification ID
    *          - token: Device token notification was sent to
    */
-  async sendEach(messages: IPushMessage[]): Promise<
+  async sendEach(messages: INotiCorePushMessage[]): Promise<
     {
       success: boolean;
       errorMessage?: string;
@@ -110,7 +110,7 @@ export class FCMEdgeService implements IMessageSender<IPushMessage>, IFCMSender 
    * @param message - The message to send.
    * @returns The response from the FCM API.
    */
-  async send(message: IPushMessage): Promise<any> {
+  async send(message: INotiCorePushMessage): Promise<any> {
     return this.sendEach([message]);
   }
 }

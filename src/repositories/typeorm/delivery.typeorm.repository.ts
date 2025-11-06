@@ -3,13 +3,13 @@ import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity
 import { NotiCoreDeliveryObject } from '../../interfaces';
 import { NotiCoreDeliveryChannelEnum, NotiCoreNotificationStatusEnum, NotiCorePriorityEnum } from '../../enums';
 import {
-  CheckForPendingNotificationRequestDto,
-  CreateNotificationDeliveryRequestDto,
-  DeliverCreatedNotificationRequestDto,
-  DeliverFailedNotificationRequestDto,
-  DeliverPendingNotificationsRequestDto,
-  UpdateFailedNotificationsRequestDto,
-  UpdateSuccessfullySentNotificationsRequestDto,
+  NotiCoreCheckForPendingNotificationRequestDto,
+  NotiCoreCreateDeliveryRequestDto,
+  NotiCoreDeliverCreatedNotificationRequestDto,
+  NotiCoreDeliverFailedNotificationRequestDto,
+  NotiCoreDeliverPendingNotificationsRequestDto,
+  NotiCoreUpdateFailedNotificationsRequestDto,
+  NotiCoreUpdateSuccessfullySentNotificationsRequestDto,
 } from '../../dtos/repository/requests';
 import { INotiCoreDeliveryRepository } from '../../interfaces/repository.interface';
 
@@ -18,7 +18,7 @@ export class NotiCoreDeliveryTypeORMRepository<T extends NotiCoreDeliveryObject>
 {
   constructor(private readonly repository: Repository<T>) {}
 
-  async create(dto: CreateNotificationDeliveryRequestDto): Promise<T[]> {
+  async create(dto: NotiCoreCreateDeliveryRequestDto): Promise<T[]> {
     let notificationDeliveryItems: T[] = [];
     const recipients = Array.from(dto.recipients);
     if (recipients.length === 0) {
@@ -83,7 +83,7 @@ export class NotiCoreDeliveryTypeORMRepository<T extends NotiCoreDeliveryObject>
     return dbNotifications;
   }
 
-  async deliverCreatedNotifications(dto: DeliverCreatedNotificationRequestDto): Promise<T[]> {
+  async deliverCreatedNotifications(dto: NotiCoreDeliverCreatedNotificationRequestDto): Promise<T[]> {
     const notifications = await this.repository.find({
       where: {
         channelType: dto.channelType,
@@ -106,7 +106,7 @@ export class NotiCoreDeliveryTypeORMRepository<T extends NotiCoreDeliveryObject>
 
     return notifications;
   }
-  async retryFailedNotifications(dto: DeliverFailedNotificationRequestDto): Promise<T[]> {
+  async retryFailedNotifications(dto: NotiCoreDeliverFailedNotificationRequestDto): Promise<T[]> {
     const notifications = await this.repository.find({
       where: {
         channelType: dto.channelType,
@@ -133,7 +133,7 @@ export class NotiCoreDeliveryTypeORMRepository<T extends NotiCoreDeliveryObject>
 
     return notifications;
   }
-  async checkDeadLineForPendingNotifications(dto: CheckForPendingNotificationRequestDto): Promise<void> {
+  async checkDeadLineForPendingNotifications(dto: NotiCoreCheckForPendingNotificationRequestDto): Promise<void> {
     const notifications = await this.repository.find({
       where: {
         channelType: dto.channelType,
@@ -155,7 +155,7 @@ export class NotiCoreDeliveryTypeORMRepository<T extends NotiCoreDeliveryObject>
       { status: NotiCoreNotificationStatusEnum.FAILED } as unknown as QueryDeepPartialEntity<T>,
     );
   }
-  async deliverPendingNotifications(dto: DeliverPendingNotificationsRequestDto): Promise<T[]> {
+  async deliverPendingNotifications(dto: NotiCoreDeliverPendingNotificationsRequestDto): Promise<T[]> {
     return await this.repository.find({
       where: {
         id: In(dto.ids),
@@ -166,7 +166,7 @@ export class NotiCoreDeliveryTypeORMRepository<T extends NotiCoreDeliveryObject>
 
   async updateSuccessfullySentNotifications({
     successIds,
-  }: UpdateSuccessfullySentNotificationsRequestDto): Promise<void> {
+  }: NotiCoreUpdateSuccessfullySentNotificationsRequestDto): Promise<void> {
     await this.repository.update(
       { id: In(successIds) } as FindOptionsWhere<T>,
       {
@@ -178,7 +178,7 @@ export class NotiCoreDeliveryTypeORMRepository<T extends NotiCoreDeliveryObject>
   async updateFailedNotifications({
     failedIds,
     errorMessage,
-  }: UpdateFailedNotificationsRequestDto): Promise<void> {
+  }: NotiCoreUpdateFailedNotificationsRequestDto): Promise<void> {
     await this.repository.update(
       { id: In(failedIds) } as FindOptionsWhere<T>,
       {

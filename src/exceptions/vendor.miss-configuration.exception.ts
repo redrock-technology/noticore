@@ -1,7 +1,7 @@
 import { NotiCoreDeliveryChannelEnum } from '../enums';
 import { ServerException } from './server.exception';
 
-export class VendorMissConfigurationException extends ServerException {
+export class NotiCoreVendorMissConfigurationException extends ServerException {
   constructor(methodDescription: { channelType: NotiCoreDeliveryChannelEnum }) {
     super({
       information: {

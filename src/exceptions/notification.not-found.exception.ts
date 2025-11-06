@@ -1,6 +1,6 @@
 import { ServerException } from './server.exception';
 
-export class NotificationNotFoundException extends ServerException {
+export class NotiCoreNotificationNotFoundException extends ServerException {
   constructor() {
     super({
       information: {

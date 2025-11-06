@@ -1,16 +1,16 @@
 import * as admin from 'firebase-admin';
 
-export type SmsToConfigType = {
+export type NotiCoreSmsToConfigType = {
   providerToken: string;
   url: string;
   number: string;
 };
 
-export type FCMConfigType = {
+export type NotiCoreFCMConfigType = {
   serviceAccount: admin.ServiceAccount;
 };
 
-export type MailgunConfigType = {
+export type NotiCoreMailgunConfigType = {
   domain: string;
   from: string;
   key: string;

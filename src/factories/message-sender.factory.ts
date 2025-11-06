@@ -1,7 +1,7 @@
 import { FCMEdgeService, MailgunEdgeService, SmsToEdgeService } from '../message-senders';
 import { NotiCoreDeliveryChannelEnum } from '../enums';
-import { VendorMissConfigurationException } from '../exceptions/vendor.miss-configuration.exception';
-import { IMessageSender, INotificationMessagePayload } from '../interfaces';
+import { NotiCoreVendorMissConfigurationException } from '../exceptions/vendor.miss-configuration.exception';
+import { INotiCoreMessageSender, INotiCoreNotificationMessagePayload } from '../interfaces';
 import { NotiCoreNotificationConfigService } from '../services/config.service';
 
 /**
@@ -10,26 +10,26 @@ import { NotiCoreNotificationConfigService } from '../services/config.service';
  * The edge services must configure before use by NotiCoreNotificationConfigService.initializeSmsToConfig, initializeFCMConfig or initializeEmailConfig
  */
 export class NotiCoreMessageSenderFactory {
-  static createSender(type: NotiCoreDeliveryChannelEnum): IMessageSender<INotificationMessagePayload> {
+  static createSender(type: NotiCoreDeliveryChannelEnum): INotiCoreMessageSender<INotiCoreNotificationMessagePayload> {
     switch (type) {
       case NotiCoreDeliveryChannelEnum.EMAIL: {
         const emailConfig = NotiCoreNotificationConfigService.getEmailConfig();
         if (!emailConfig) {
-          throw new VendorMissConfigurationException({ channelType: type });
+          throw new NotiCoreVendorMissConfigurationException({ channelType: type });
         }
         return new MailgunEdgeService(emailConfig);
       }
       case NotiCoreDeliveryChannelEnum.SMS: {
         const smsToConfig = NotiCoreNotificationConfigService.getSmsToConfig();
         if (!smsToConfig) {
-          throw new VendorMissConfigurationException({ channelType: type });
+          throw new NotiCoreVendorMissConfigurationException({ channelType: type });
         }
         return new SmsToEdgeService(smsToConfig);
       }
       case NotiCoreDeliveryChannelEnum.PUSH: {
         const fcmConfig = NotiCoreNotificationConfigService.getFCMConfig();
         if (!fcmConfig) {
-          throw new VendorMissConfigurationException({ channelType: type });
+          throw new NotiCoreVendorMissConfigurationException({ channelType: type });
         }
         return new FCMEdgeService();
       }

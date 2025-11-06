@@ -1,4 +1,4 @@
-export class CreateNotificationRequestDto {
+export class NotiCoreCreateNotificationRequestDto {
   notificationId: string;
   userId: string;
   recipients: Set<string>;

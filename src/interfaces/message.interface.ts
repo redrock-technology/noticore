@@ -1,21 +1,21 @@
 import { NotiCoreDeliveryChannelEnum } from '../enums';
 import { INotiCoreNotificationData, INotiCoreNotificationPayload } from './notification-entity.interface';
 
-export interface INotificationMessage {
+export interface INotiCoreNotificationMessage {
   type: NotiCoreDeliveryChannelEnum;
   additionalData?: Record<string, string>;
   recipient: string;
   payload: INotiCoreNotificationPayload;
 }
 
-export interface ISMSMessage extends INotificationMessage {
+export interface INotiCoreSMSMessage extends INotiCoreNotificationMessage {
   type: NotiCoreDeliveryChannelEnum.SMS;
   payload: {
     body: string;
   };
 }
 
-export interface IPushMessage extends INotificationMessage {
+export interface INotiCorePushMessage extends INotiCoreNotificationMessage {
   type: NotiCoreDeliveryChannelEnum.PUSH;
   id: string;
   payload: {
@@ -31,7 +31,7 @@ export interface IPushMessage extends INotificationMessage {
   };
 }
 
-export interface IEmailMessage extends INotificationMessage {
+export interface INotiCoreEmailMessage extends INotiCoreNotificationMessage {
   type: NotiCoreDeliveryChannelEnum.EMAIL;
   id: string;
   payload: {
@@ -40,15 +40,15 @@ export interface IEmailMessage extends INotificationMessage {
   };
 }
 
-export type INotificationMessagePayload = ISMSMessage | IPushMessage | IEmailMessage;
+export type INotiCoreNotificationMessagePayload = INotiCoreSMSMessage | INotiCorePushMessage | INotiCoreEmailMessage;
 
-export interface IMessageSender<T extends INotificationMessagePayload> {
+export interface INotiCoreMessageSender<T extends INotiCoreNotificationMessagePayload> {
   send(message: T): Promise<any>;
   sendEach(messages: T[]): Promise<any>;
 }
 
-export interface IFCMSender extends IMessageSender<IPushMessage> {
-  sendEach(messages: IPushMessage[]): Promise<
+export interface INotiCoreFCMSender extends INotiCoreMessageSender<INotiCorePushMessage> {
+  sendEach(messages: INotiCorePushMessage[]): Promise<
     {
       success: boolean;
       errorMessage?: string;
@@ -57,7 +57,7 @@ export interface IFCMSender extends IMessageSender<IPushMessage> {
       token: string;
     }[]
   >;
-  send(message: IPushMessage): Promise<{
+  send(message: INotiCorePushMessage): Promise<{
     success: boolean;
     errorMessage?: string;
     errorCode?: string;
@@ -66,13 +66,13 @@ export interface IFCMSender extends IMessageSender<IPushMessage> {
   }>;
 }
 
-export interface ISMSSender extends IMessageSender<ISMSMessage> {
-  send(message: ISMSMessage): Promise<any>;
-  sendEach(messages: ISMSMessage[]): Promise<any>;
+export interface INotiCoreSMSSender extends INotiCoreMessageSender<INotiCoreSMSMessage> {
+  send(message: INotiCoreSMSMessage): Promise<any>;
+  sendEach(messages: INotiCoreSMSMessage[]): Promise<any>;
 }
 
-export interface IEmailSender extends IMessageSender<IEmailMessage> {
-  send(message: IEmailMessage): Promise<{
+export interface INotiCoreEmailSender extends INotiCoreMessageSender<INotiCoreEmailMessage> {
+  send(message: INotiCoreEmailMessage): Promise<{
     success: boolean;
     data: {
       id?: string;
@@ -81,7 +81,7 @@ export interface IEmailSender extends IMessageSender<IEmailMessage> {
       details?: string;
     };
   }>;
-  sendEach(messages: IEmailMessage[]): Promise<
+  sendEach(messages: INotiCoreEmailMessage[]): Promise<
     {
       success: boolean;
       data: {

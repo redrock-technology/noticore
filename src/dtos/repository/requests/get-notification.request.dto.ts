@@ -1,4 +1,4 @@
-export class GetNotificationRequestDto {
+export class NotiCoreGetNotificationRequestDto {
   userId?: string;
   from?: Date;
   to?: Date;

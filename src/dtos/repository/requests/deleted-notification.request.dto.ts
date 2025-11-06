@@ -1,4 +1,4 @@
-export class DeleteNotificationForUserDeletedPartitionRequestDto {
+export class NotiCoreDeleteNotificationForUserDeletedPartitionRequestDto {
   userId: string;
   lastId?: string;
   traceId: string;
@@ -6,18 +6,18 @@ export class DeleteNotificationForUserDeletedPartitionRequestDto {
   limit?: number;
 }
 
-export class BulkDeleteNotificationUserDeletedPartitionRequestDto {
-  batchMessages: DeleteNotificationForUserDeletedPartitionRequestDto[];
+export class NotiCoreBulkDeleteNotificationUserDeletedPartitionRequestDto {
+  batchMessages: NotiCoreDeleteNotificationForUserDeletedPartitionRequestDto[];
 }
 
-export class ReferenceDeletedNotificationRequestDto {
+export class NotiCoreReferenceDeletedNotificationRequestDto {
   referenceId: string;
   partitionSize: number;
   where?: any;
   select?: string[];
 }
 
-export class UserDeletedNotificationRequestDto {
+export class NotiCoreUserDeletedNotificationRequestDto {
   userId: string;
   partitionSize: number;
 }

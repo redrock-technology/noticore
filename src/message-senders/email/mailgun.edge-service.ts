@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import Mailgun from 'mailgun.js';
 import { IMailgunClient } from 'mailgun.js/Interfaces/MailgunClient/IMailgunClient';
-import { IEmailMessage, IEmailSender, IMessageSender, MailgunConfigType } from '../../interfaces';
+import { INotiCoreEmailMessage, INotiCoreEmailSender, INotiCoreMessageSender, NotiCoreMailgunConfigType } from '../../interfaces';
 
 @Injectable()
-export class MailgunEdgeService implements IMessageSender<IEmailMessage>, IEmailSender {
+export class MailgunEdgeService implements INotiCoreMessageSender<INotiCoreEmailMessage>, INotiCoreEmailSender {
   private mailgun: Mailgun;
   private client: IMailgunClient;
-  constructor(private readonly config: MailgunConfigType) {
+  constructor(private readonly config: NotiCoreMailgunConfigType) {
     this.config = config;
     this.mailgun = new Mailgun(FormData);
     this.client = this.mailgun.client({ username: 'api', key: this.config.key });
@@ -38,7 +38,7 @@ export class MailgunEdgeService implements IMessageSender<IEmailMessage>, IEmail
     };
   }
 
-  async send(message: IEmailMessage): Promise<{
+  async send(message: INotiCoreEmailMessage): Promise<{
     success: boolean;
     data: {
       id?: string;
@@ -50,7 +50,7 @@ export class MailgunEdgeService implements IMessageSender<IEmailMessage>, IEmail
     return await this.sendMessage(message.payload.title, message.payload.body, message.recipient);
   }
 
-  async sendEach(messages: IEmailMessage[]): Promise<
+  async sendEach(messages: INotiCoreEmailMessage[]): Promise<
     {
       success: boolean;
       data: {

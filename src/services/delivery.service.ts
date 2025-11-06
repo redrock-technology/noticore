@@ -1,6 +1,6 @@
 import { INotiCoreDeliveryMQEventPublisher } from '../interfaces/mq.interface';
 import { INotiCoreResourceLock } from '../interfaces/resource-lock.interface';
-import { IEmailSender, IFCMSender, ISMSSender, NotiCoreDeliveryObject } from '../interfaces';
+import { INotiCoreEmailSender, INotiCoreFCMSender, INotiCoreSMSSender, NotiCoreDeliveryObject } from '../interfaces';
 import { INotiCoreDeliveryRepository } from '../interfaces/repository.interface';
 import { NotiCoreDeliveryChannelEnum, NotiCoreNotificationStatusEnum, NotiCorePriorityEnum } from '../enums';
 import {
@@ -28,9 +28,9 @@ import {
  */
 export class NotiCoreDeliveryService<T extends NotiCoreDeliveryObject> {
   constructor(
-    private readonly smsSender: ISMSSender,
-    private readonly fcmSender: IFCMSender,
-    private readonly emailSender: IEmailSender,
+    private readonly smsSender: INotiCoreSMSSender,
+    private readonly fcmSender: INotiCoreFCMSender,
+    private readonly emailSender: INotiCoreEmailSender,
     private readonly resourceLockService: INotiCoreResourceLock,
     private readonly eventPublisher: INotiCoreDeliveryMQEventPublisher,
     private repository: INotiCoreDeliveryRepository<T>,

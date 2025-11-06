@@ -2,7 +2,7 @@
 import { NotiCoreDeliveryChannelEnum, NotiCorePriorityEnum } from '../../../enums';
 import { INotiCoreNotificationData, INotiCoreNotificationPayload } from '../../../interfaces';
 
-export class CreateNotificationDeliveryRequestDto {
+export class NotiCoreCreateDeliveryRequestDto {
   channelType: NotiCoreDeliveryChannelEnum;
   userId: string;
   payload: INotiCoreNotificationPayload;

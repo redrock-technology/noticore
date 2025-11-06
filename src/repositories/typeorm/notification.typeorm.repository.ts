@@ -14,21 +14,21 @@ import {
 import { INotiCorePaginationResponse } from '../../interfaces/pagination.interface';
 import { NotiCoreNotificationObject } from '../../interfaces';
 import { NotiCoreNotificationStatusEnum } from '../../enums';
-import { NotificationNotFoundException } from '../../exceptions/notification.not-found.exception';
+import { NotiCoreNotificationNotFoundException } from '../../exceptions/notification.not-found.exception';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import {
-  NotificationFailureMessageFactory,
-  NotificationFailureReason,
+  NotiCoreNotificationFailureMessageFactory,
+  NotiCoreNotificationFailureReason,
 } from '../../factories/notification.failure-message.factory';
 import { INotiCoreNotificationRepository } from '../../interfaces/repository.interface';
 import {
-  DeleteNotificationForUserDeletedPartitionRequestDto,
-  FindOneNotificationRequestDto,
-  FindPendingNotificationRequestDto,
-  GetNotificationRequestDto,
-  ReferenceDeletedNotificationRequestDto,
-  UpdateNotificationRequestDto,
-  UserDeletedNotificationRequestDto,
+  NotiCoreDeleteNotificationForUserDeletedPartitionRequestDto,
+  NotiCoreFindOneNotificationRequestDto,
+  NotiCoreFindPendingNotificationRequestDto,
+  NotiCoreGetNotificationRequestDto,
+  NotiCoreReferenceDeletedNotificationRequestDto,
+  NotiCoreUpdateNotificationRequestDto,
+  NotiCoreUserDeletedNotificationRequestDto,
 } from '../../dtos/repository/requests';
 
 /**
@@ -45,7 +45,7 @@ export class NotiCoreNotificationTypeORMRepository<T extends NotiCoreNotificatio
     return result;
   }
 
-  async getnotifications(dto: GetNotificationRequestDto): Promise<INotiCorePaginationResponse<T>> {
+  async getnotifications(dto: NotiCoreGetNotificationRequestDto): Promise<INotiCorePaginationResponse<T>> {
     const [data, count] = await this.repository.findAndCount({
       where: dto.where
         ? dto.where
@@ -67,7 +67,7 @@ export class NotiCoreNotificationTypeORMRepository<T extends NotiCoreNotificatio
     };
   }
 
-  async findOne(dto: FindOneNotificationRequestDto): Promise<T | null> {
+  async findOne(dto: NotiCoreFindOneNotificationRequestDto): Promise<T | null> {
     const notification = await this.repository.findOne({
       where: dto.where
         ? dto.where
@@ -79,13 +79,13 @@ export class NotiCoreNotificationTypeORMRepository<T extends NotiCoreNotificatio
     });
 
     if (!notification && dto.throwError) {
-      throw new NotificationNotFoundException();
+      throw new NotiCoreNotificationNotFoundException();
     }
 
     return notification;
   }
 
-  async setAsNotified(dto: UpdateNotificationRequestDto): Promise<void> {
+  async setAsNotified(dto: NotiCoreUpdateNotificationRequestDto): Promise<void> {
     const notification = await this.findOne({ id: dto.id, throwError: true });
 
     await this.repository.update(
@@ -94,13 +94,13 @@ export class NotiCoreNotificationTypeORMRepository<T extends NotiCoreNotificatio
     );
   }
 
-  async setAsFailed(dto: UpdateNotificationRequestDto): Promise<void> {
+  async setAsFailed(dto: NotiCoreUpdateNotificationRequestDto): Promise<void> {
     await this.repository
       .createQueryBuilder()
       .update({
         errorMessage: dto.errorReason
-          ? NotificationFailureMessageFactory.getMessage(dto.errorReason)
-          : NotificationFailureMessageFactory.getMessage(NotificationFailureReason.UNKNOWN),
+          ? NotiCoreNotificationFailureMessageFactory.getMessage(dto.errorReason)
+          : NotiCoreNotificationFailureMessageFactory.getMessage(NotiCoreNotificationFailureReason.UNKNOWN),
         status: NotiCoreNotificationStatusEnum.FAILED,
         retryCount: () => 'retryCount + 1',
         retryAt: null,
@@ -109,21 +109,21 @@ export class NotiCoreNotificationTypeORMRepository<T extends NotiCoreNotificatio
       .execute();
   }
 
-  async setForRetry(dto: UpdateNotificationRequestDto): Promise<void> {
+  async setForRetry(dto: NotiCoreUpdateNotificationRequestDto): Promise<void> {
     await this.repository
       .createQueryBuilder()
       .update({
         retryCount: () => 'retryCount + 1',
         retryAt: () => `CURRENT_TIMESTAMP + INTERVAL '${dto.delay} seconds'`,
         errorMessage: dto.errorReason
-          ? NotificationFailureMessageFactory.getMessage(dto.errorReason)
-          : NotificationFailureMessageFactory.getMessage(NotificationFailureReason.UNKNOWN),
+          ? NotiCoreNotificationFailureMessageFactory.getMessage(dto.errorReason)
+          : NotiCoreNotificationFailureMessageFactory.getMessage(NotiCoreNotificationFailureReason.UNKNOWN),
       } as QueryDeepPartialEntity<T>)
       .where({ id: dto.id })
       .execute();
   }
 
-  async findPendings(dto: FindPendingNotificationRequestDto): Promise<T[]> {
+  async findPendings(dto: NotiCoreFindPendingNotificationRequestDto): Promise<T[]> {
     return this.repository.find({
       where: dto.where
         ? dto.where
@@ -141,7 +141,7 @@ export class NotiCoreNotificationTypeORMRepository<T extends NotiCoreNotificatio
     });
   }
 
-  async handleReferenceDeleted(dto: ReferenceDeletedNotificationRequestDto): Promise<void> {
+  async handleReferenceDeleted(dto: NotiCoreReferenceDeletedNotificationRequestDto): Promise<void> {
     const froundNotifications = await this.repository.find({
       where: dto.where
         ? dto.where
@@ -159,7 +159,7 @@ export class NotiCoreNotificationTypeORMRepository<T extends NotiCoreNotificatio
     } as FindOptionsWhere<T>);
   }
 
-  async handleUserDeleted(dto: UserDeletedNotificationRequestDto): Promise<
+  async handleUserDeleted(dto: NotiCoreUserDeletedNotificationRequestDto): Promise<
     {
       id: string;
       userId: string;
@@ -194,7 +194,7 @@ export class NotiCoreNotificationTypeORMRepository<T extends NotiCoreNotificatio
   }
 
   async handleUserDeletedPartitionCreated(
-    dto: DeleteNotificationForUserDeletedPartitionRequestDto,
+    dto: NotiCoreDeleteNotificationForUserDeletedPartitionRequestDto,
   ): Promise<void> {
     const { userId, traceId, lastId } = dto;
 

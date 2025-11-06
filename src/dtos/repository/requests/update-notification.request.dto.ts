@@ -1,7 +1,7 @@
-import { NotificationFailureReason } from '../../../factories/notification.failure-message.factory';
+import { NotiCoreNotificationFailureReason } from '../../../factories/notification.failure-message.factory';
 
-export class UpdateNotificationRequestDto {
+export class NotiCoreUpdateNotificationRequestDto {
   id: string;
-  errorReason?: NotificationFailureReason;
+  errorReason?: NotiCoreNotificationFailureReason;
   delay?: number;
 }

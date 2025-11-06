@@ -1,9 +1,9 @@
 import { Repository } from 'typeorm';
 import {
-  IEmailMessage,
-  IMessageSender,
-  IPushMessage,
-  ISMSMessage,
+  INotiCoreEmailMessage,
+  INotiCoreMessageSender,
+  INotiCorePushMessage,
+  INotiCoreSMSMessage,
   NotiCoreDeliveryObject,
   NotiCoreNotificationObject,
 } from '../interfaces';
@@ -12,7 +12,7 @@ import {
   INotiCoreNotificationMQEventPublisher,
 } from '../interfaces/mq.interface';
 import { INotiCoreDeliveryRepository, INotiCoreNotificationRepository } from '../interfaces/repository.interface';
-import { RRNotificationService } from '../services/notification.service';
+import { NotiCoreNotificationService } from '../services/notification.service';
 import { NotiCoreNotificationRepositoryFactory, RepositoryOptionEnum } from './repository.factory';
 import { INotiCoreResourceLock } from '../interfaces/resource-lock.interface';
 import { NotiCoreMessageSenderFactory } from './message-sender.factory';
@@ -71,9 +71,9 @@ export class NotificationServiceRecipe {
 }
 
 export interface INotificationDeliveryServiceRecipe<T extends NotiCoreDeliveryObject> {
-  smsSender: IMessageSender<ISMSMessage>;
-  fcmSender: IMessageSender<IPushMessage>;
-  emailSender: IMessageSender<IEmailMessage>;
+  smsSender: INotiCoreMessageSender<INotiCoreSMSMessage>;
+  fcmSender: INotiCoreMessageSender<INotiCorePushMessage>;
+  emailSender: INotiCoreMessageSender<INotiCoreEmailMessage>;
   resourceLockService: INotiCoreResourceLock;
   eventPublisher: INotiCoreDeliveryMQEventPublisher;
   repository: INotiCoreDeliveryRepository<T>;
@@ -97,9 +97,9 @@ export class NotificationDeliveryServiceRecipe {
     eventPublisher,
     repository,
   }: {
-    smsSender: IMessageSender<ISMSMessage>;
-    fcmSender: IMessageSender<IPushMessage>;
-    emailSender: IMessageSender<IEmailMessage>;
+    smsSender: INotiCoreMessageSender<INotiCoreSMSMessage>;
+    fcmSender: INotiCoreMessageSender<INotiCorePushMessage>;
+    emailSender: INotiCoreMessageSender<INotiCoreEmailMessage>;
     resourceLockService: INotiCoreResourceLock;
     eventPublisher: INotiCoreDeliveryMQEventPublisher;
     repository: INotiCoreDeliveryRepository<T>;
@@ -134,9 +134,9 @@ export class NotificationDeliveryServiceRecipe {
     repositoryType,
     typeormNotificationDeliveryRepository,
   }: {
-    smsSender: IMessageSender<ISMSMessage>;
-    fcmSender: IMessageSender<IPushMessage>;
-    emailSender: IMessageSender<IEmailMessage>;
+    smsSender: INotiCoreMessageSender<INotiCoreSMSMessage>;
+    fcmSender: INotiCoreMessageSender<INotiCorePushMessage>;
+    emailSender: INotiCoreMessageSender<INotiCoreEmailMessage>;
     resourceLockService: INotiCoreResourceLock;
     eventPublisher: INotiCoreDeliveryMQEventPublisher;
     repositoryType: RepositoryOptionEnum;
@@ -157,14 +157,14 @@ export class NotificationDeliveryServiceRecipe {
   }
 }
 
-export class RNServiceFactory {
+export class NotiCoreServiceFactory {
   static createNotificationService<T extends NotiCoreNotificationObject>(
     recipe: INotificationServiceRecipe<T>,
-  ): RRNotificationService<T> {
-    return new RRNotificationService(recipe.repository, recipe.eventPublisher);
+  ): NotiCoreNotificationService<T> {
+    return new NotiCoreNotificationService(recipe.repository, recipe.eventPublisher);
   }
 
-  static createNotificationDeliveryService<T extends NotiCoreDeliveryObject>(
+  static createDeliveryService<T extends NotiCoreDeliveryObject>(
     recipe: INotificationDeliveryServiceRecipe<T>,
   ): NotiCoreDeliveryService<T> {
     return new NotiCoreDeliveryService(

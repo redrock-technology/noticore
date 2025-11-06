@@ -1,32 +1,32 @@
-import { FCMConfigType, MailgunConfigType, SmsToConfigType } from '../interfaces';
+import { NotiCoreFCMConfigType, NotiCoreMailgunConfigType, NotiCoreSmsToConfigType } from '../interfaces';
 import { FCMEdgeService } from '../message-senders';
 
 export class NotiCoreNotificationConfigService {
-  private static smsToConfig?: SmsToConfigType;
-  private static fcmConfig?: FCMConfigType;
-  private static emailConfig?: MailgunConfigType;
+  private static smsToConfig?: NotiCoreSmsToConfigType;
+  private static fcmConfig?: NotiCoreFCMConfigType;
+  private static emailConfig?: NotiCoreMailgunConfigType;
 
-  static initializeSmsToConfig(config: SmsToConfigType): void {
+  static initializeSmsToConfig(config: NotiCoreSmsToConfigType): void {
     this.smsToConfig = config;
   }
 
-  static initializeFCMConfig(config: FCMConfigType): void {
+  static initializeFCMConfig(config: NotiCoreFCMConfigType): void {
     this.fcmConfig = config;
     FCMEdgeService.initializeApp(config.serviceAccount);
   }
-  static initializeEmailConfig(config: MailgunConfigType): void {
+  static initializeEmailConfig(config: NotiCoreMailgunConfigType): void {
     this.emailConfig = config;
   }
 
-  static getSmsToConfig(): SmsToConfigType | undefined {
+  static getSmsToConfig(): NotiCoreSmsToConfigType | undefined {
     return this.smsToConfig;
   }
 
-  static getFCMConfig(): FCMConfigType | undefined {
+  static getFCMConfig(): NotiCoreFCMConfigType | undefined {
     return this.fcmConfig;
   }
 
-  static getEmailConfig(): MailgunConfigType | undefined {
+  static getEmailConfig(): NotiCoreMailgunConfigType | undefined {
     return this.emailConfig;
   }
 }
