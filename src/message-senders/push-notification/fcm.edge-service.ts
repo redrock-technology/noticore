@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { getMessaging } from 'firebase-admin/messaging';
-import { IFCMSender, IMessageSender, IPushMessage } from '../interfaces';
+import { IFCMSender, IMessageSender, IPushMessage } from '../../interfaces';
 
 /**
  * This edge service integrates with the Firebase Cloud Messaging (FCM) API (https://firebase.google.com/docs/cloud-messaging)
