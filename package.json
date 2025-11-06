@@ -2,7 +2,11 @@
   "name": "noticore",
   "version": "1.0.1",
   "description": "a flexible library for making scaleable notification system",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "npx tsc",
     "prepublishOnly": "npm run build",
@@ -13,6 +17,10 @@
     "type": "git",
     "url": "git+https://github.com/redrock-technology/noticore"
   },
+  "bugs": {
+    "url": "https://github.com/redrock-technology/noticore/issues"
+  },
+  "homepage": "https://github.com/redrock-technology/noticore#readme",
   "keywords": [
     "notification",
     "system",
