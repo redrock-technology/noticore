@@ -1,6 +1,6 @@
 {
   "name": "noticore",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a flexible library for making scaleable notification system",
   "main": "index.js",
   "scripts": {
